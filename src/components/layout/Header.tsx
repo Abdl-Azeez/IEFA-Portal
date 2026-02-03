@@ -1,54 +1,107 @@
-import { Bell, Search, Menu } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Bell, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export function Header() {
   const [notifications] = useState(3)
+  const [isVisible, setIsVisible] = useState(true)
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      
+      // Hide when scrolling down, show when scrolling up
+      // Add a small threshold (e.g., 10px) to prevent flickering
+      if (currentScrollY > lastScrollY.current && currentScrollY > 20) {
+        setIsVisible(false)
+      } else {
+        setIsVisible(true)
+      }
+      lastScrollY.current = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b px-6 transition-all duration-200" style={{ backgroundColor: 'white' }}>
-      <Button variant="ghost" size="icon" className="lg:hidden">
-        <Menu className="h-5 w-5" />
-      </Button>
-
+    <motion.header 
+      className="sticky top-0 z-30 flex h-16 items-center gap-4 px-6 transition-all duration-200 mt-8"
+      style={{ backgroundColor: 'transparent' }}
+      initial={{ y: -100 }}
+      animate={{ y: isVisible ? 0 : -100 }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+    >
       <div className="flex flex-1 items-center gap-4">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <motion.div 
+          className="relative flex-1 max-w-md"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#737692]" />
           <input
             type="search"
             placeholder="Search..."
-            className="w-full rounded-lg border border-input pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all duration-200"
-            style={{ backgroundColor: 'white', color: '#000000' }}
+            className="w-full rounded-full border-0 bg-white pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200 shadow-sm"
+            style={{ color: '#000000' }}
           />
-        </div>
+        </motion.div>
       </div>
 
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          {notifications > 0 && (
-            <Badge 
-              variant="destructive" 
-              className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs animate-pulse"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <Button variant="ghost" size="icon" className="relative bg-white rounded-full shadow-sm hover:bg-white/80">
+            <motion.div
+              whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+              transition={{ duration: 0.5 }}
             >
-              {notifications}
-            </Badge>
-          )}
-        </Button>
+              <Bell className="h-5 w-5 text-[#737692]" />
+            </motion.div>
+            {notifications > 0 && (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.5, type: "spring", stiffness: 500 }}
+              >
+                <Badge 
+                  className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs bg-primary text-white border-0"
+                >
+                  {notifications}
+                </Badge>
+              </motion.div>
+            )}
+          </Button>
+        </motion.div>
 
-        <div className="flex items-center gap-3">
-          <Avatar className="h-9 w-9 ring-2 ring-primary/20 transition-all duration-200 hover:ring-primary/40">
-            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=IEFA" alt="User" />
-            <AvatarFallback>U</AvatarFallback>
-          </Avatar>
-          <div className="hidden md:block">
-            <p className="text-sm font-medium" style={{ color: '#000000' }}>John Doe</p>
-            <p className="text-xs" style={{ color: '#737692' }}>john@iefa.org</p>
+        <motion.div 
+          className="flex items-center gap-3 bg-white rounded-full px-3 py-1.5 shadow-sm"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Avatar className="h-9 w-9 ring-2 ring-primary/20 transition-all duration-200 hover:ring-primary/40 cursor-pointer">
+              <AvatarImage src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="User" />
+              <AvatarFallback>IB</AvatarFallback>
+            </Avatar>
+          </motion.div>
+          <div className="hidden md:block pr-2">
+            <p className="text-sm font-medium" style={{ color: '#000000' }}>Ibrahim Shenshen</p>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </header>
+    </motion.header>
   )
 }
