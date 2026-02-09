@@ -275,7 +275,7 @@ export function MarketInsights() {
           <CardContent>
             <Tabs defaultValue="Top Gainers" className="w-full">
               <TabsList className="bg-transparent h-auto p-0 mb-6 gap-0">
-                {['Top Gainers', 'Top Losers', 'Most Active'].map((tab, idx) => (
+                {['Top Gainers', 'Top Losers', 'Most Active'].map((tab) => (
                   <TabsTrigger 
                     key={tab}
                     value={tab}

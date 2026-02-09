@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { TrendingUp, ChevronUp, Play, Clock, BookOpen, ChevronRight } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -154,7 +154,7 @@ const newsData = [
 
 // Stock Table Component
 interface StockTableProps {
-  data: typeof stockData.topGainers
+  data: { symbol: string; company: string; price1: string; price2: string; trend: 'up' | 'down' }[]
 }
 
 function StockTable({ data }: StockTableProps) {
