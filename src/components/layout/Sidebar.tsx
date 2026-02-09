@@ -32,7 +32,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
   return (
     <motion.aside 
       className={cn(
-        "absolute left-0 top-0 z-40 h-full transition-all duration-300",
+        "absolute left-0 top-0 z-40 min-h-screen h-full transition-all duration-300",
         isCollapsed ? "w-20" : "w-[297px]"
       )}
       style={{ 

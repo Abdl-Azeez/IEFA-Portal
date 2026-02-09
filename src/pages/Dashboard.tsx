@@ -1,6 +1,8 @@
-import { motion } from 'framer-motion'
-import { TrendingUp, Play, Clock, BookOpen, ChevronRight } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { TrendingUp, ChevronUp, Play, Clock, BookOpen, ChevronRight } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -24,16 +26,17 @@ const itemVariants = {
   }
 }
 
-// Circular Progress Component
+// Circular Progress Component with Gradient (full circle)
 interface CircularProgressProps {
   percentage: number
-  color: string
   label: string
-  sublabel: string
+  centerText: string
+  id: string
 }
 
-function CircularProgress({ percentage, color, label, sublabel }: CircularProgressProps) {
+function CircularProgress({ percentage, label, centerText, id }: CircularProgressProps) {
   const radius = 70
+  const strokeWidth = 12
   const circumference = 2 * Math.PI * radius
   const strokeDashoffset = circumference - (percentage / 100) * circumference
 
@@ -45,21 +48,20 @@ function CircularProgress({ percentage, color, label, sublabel }: CircularProgre
       transition={{ duration: 0.5, type: "spring" }}
     >
       <div className="relative w-44 h-44">
-        <svg className="w-full h-full transform -rotate-90">
-          <circle
-            cx="88"
-            cy="88"
-            r={radius}
-            stroke="#E5E7EB"
-            strokeWidth="12"
-            fill="transparent"
-          />
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 180 180">
+          <defs>
+            <linearGradient id={`progressGradient-${id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#D52B1E" />
+              <stop offset="100%" stopColor="#6F1610" />
+            </linearGradient>
+          </defs>
+          {/* Progress circle - full circle with gradient */}
           <motion.circle
-            cx="88"
-            cy="88"
+            cx="90"
+            cy="90"
             r={radius}
-            stroke={color}
-            strokeWidth="12"
+            stroke={`url(#progressGradient-${id})`}
+            strokeWidth={strokeWidth}
             fill="transparent"
             strokeLinecap="round"
             strokeDasharray={circumference}
@@ -70,29 +72,19 @@ function CircularProgress({ percentage, color, label, sublabel }: CircularProgre
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <motion.span 
-            className="text-3xl font-bold text-[#000000]"
+            className="text-sm font-medium text-[#000000] text-center px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            {percentage}%
+            {centerText}
           </motion.span>
         </div>
       </div>
-      <p className="mt-3 text-sm font-medium text-[#000000]">{label}</p>
-      <p className="text-xs text-[#737692]">{sublabel}</p>
+      <p className="mt-1 text-sm text-[#737692]">{label}</p>
     </motion.div>
   )
 }
-
-// Top Gainers Data
-const topGainers = [
-  { name: 'Islamic Finance Corp', symbol: 'IFC', price: '$124.50', change: '+5.2%', trend: 'up' as const },
-  { name: 'Halal Investment Fund', symbol: 'HIF', price: '$89.30', change: '+4.8%', trend: 'up' as const },
-  { name: 'Sukuk Global ETF', symbol: 'SGE', price: '$156.20', change: '+3.9%', trend: 'up' as const },
-  { name: 'Shariah Tech Index', symbol: 'STI', price: '$78.90', change: '+3.5%', trend: 'up' as const },
-  { name: 'Ethical Growth Fund', symbol: 'EGF', price: '$234.10', change: '+2.8%', trend: 'up' as const },
-]
 
 // Course Suggestions Data
 const courseSuggestions = [
@@ -119,7 +111,140 @@ const courseSuggestions = [
   },
 ]
 
+// Stock Data
+const stockData = {
+  topGainers: [
+    { symbol: 'DANGOTE', company: 'Dangote Cement Ltd', price1: '1,7888.29', price2: '1,7888.29', trend: 'up' as const },
+    { symbol: 'BUA', company: 'Bua Cement Ltd', price1: '1,7888.29', price2: '1,7888.29', trend: 'up' as const },
+    { symbol: 'MTNN', company: 'MTN Nigeria comm', price1: '1,7888.29', price2: '1,7888.29', trend: 'up' as const },
+  ],
+  topLosers: [
+    { symbol: 'NESTLE', company: 'Nestle Nigeria Plc', price1: '1,2500.00', price2: '1,2350.00', trend: 'down' as const },
+    { symbol: 'GUINNESS', company: 'Guinness Nigeria Plc', price1: '890.50', price2: '875.20', trend: 'down' as const },
+    { symbol: 'UNILEVER', company: 'Unilever Nigeria Plc', price1: '450.00', price2: '435.80', trend: 'down' as const },
+  ],
+  mostActive: [
+    { symbol: 'GTCO', company: 'Guaranty Trust Holding', price1: '45.50', price2: '46.20', trend: 'up' as const },
+    { symbol: 'ZENITH', company: 'Zenith Bank Plc', price1: '38.90', price2: '39.10', trend: 'up' as const },
+    { symbol: 'ACCESS', company: 'Access Holdings Plc', price1: '22.30', price2: '22.00', trend: 'down' as const },
+  ],
+}
+
+// News Data
+const newsData = [
+  {
+    id: 1,
+    title: "Nigeria's Islamic Finance Assets Record Steady Growth in 2025",
+    content: "Nigeria's Islamic finance sector continues to expand, driven by rising demand for non-interest banking, ethical investments, and Sukuk instruments suppor...",
+    image: "https://images.unsplash.com/photo-1621504450181-5d356f61d307?w=400&h=300&fit=crop",
+  },
+  {
+    id: 2,
+    title: "Nigerian Universities Expand Islamic Finance and Ethical Banking Programs",
+    content: "More tertiary institutions are introducing Islamic finance courses, responding to industry demand for skilled professionals in Shariah auditi...",
+    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=300&fit=crop",
+  },
+  {
+    id: 3,
+    title: "Central Bank Announces New Sukuk Bond Framework",
+    content: "The Central Bank has introduced a new regulatory framework for Sukuk bonds, aiming to boost Islamic finance adoption across the country...",
+    image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=400&h=300&fit=crop",
+  },
+]
+
+// Stock Table Component
+interface StockTableProps {
+  data: typeof stockData.topGainers
+}
+
+function StockTable({ data }: StockTableProps) {
+  return (
+    <div>
+      {data.map((stock, index) => (
+        <motion.div
+          key={stock.symbol}
+          className={`py-4 ${index !== data.length - 1 ? 'border-b border-gray-200' : ''}`}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 + index * 0.1 }}
+        >
+          <div className="grid grid-cols-3 gap-4 items-center">
+            <div>
+              <p className="text-sm font-bold text-[#000000]">{stock.symbol}</p>
+              <p className="text-xs text-[#D52B1E]">{stock.company}</p>
+            </div>
+            <div className="flex items-center gap-1 justify-center">
+              <span className="text-sm font-medium text-[#000000]">{stock.price1}</span>
+              <ChevronUp className={`h-4 w-4 ${stock.trend === 'up' ? 'text-green-600' : 'text-red-600 rotate-180'}`} />
+            </div>
+            <div className="flex items-center gap-1 justify-center">
+              <span className="text-sm font-medium text-[#000000]">{stock.price2}</span>
+              <ChevronUp className={`h-4 w-4 ${stock.trend === 'up' ? 'text-green-600' : 'text-red-600 rotate-180'}`} />
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  )
+}
+
+// News Card Component
+interface NewsCardProps {
+  news: typeof newsData[0]
+}
+
+function NewsCard({ news }: NewsCardProps) {
+  return (
+    <div className="flex flex-col h-full w-full flex-shrink-0">
+      <div className="rounded-xl overflow-hidden mb-4 aspect-[4/3]">
+        <img
+          src={news.image}
+          alt={news.title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <h3 className="text-base font-semibold text-[#000000] mb-2 leading-tight">
+        {news.title}
+      </h3>
+      <p className="text-sm text-[#737692] mb-3 line-clamp-4">
+        {news.content}
+      </p>
+      <button className="text-sm font-medium text-primary underline underline-offset-2 text-left hover:text-primary/80 transition-colors">
+        Read More
+      </button>
+    </div>
+  )
+}
+
 export function Dashboard() {
+  const [currentNewsIndex, setCurrentNewsIndex] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(true)
+
+  // Duplicate news for infinite loop
+  const infiniteNews = [...newsData, ...newsData]
+
+  // Auto-slide news every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentNewsIndex((prev) => prev + 1)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  // Reset to beginning when reaching the end of the duplicated section
+  useEffect(() => {
+    if (currentNewsIndex >= newsData.length) {
+      // Wait for transition to complete
+      setTimeout(() => {
+        setIsTransitioning(false)
+        setCurrentNewsIndex(0)
+        // Re-enable transition after reset
+        setTimeout(() => setIsTransitioning(true), 50)
+      }, 600) // Match transition duration
+    }
+  }, [currentNewsIndex])
+
   return (
     <motion.div 
       className="space-y-6"
@@ -139,211 +264,217 @@ export function Dashboard() {
         </div>
       </motion.div>
 
-      {/* Main Grid Layout */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Left Column - Top Gainers & Progress */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Top Gainers Table */}
-          <motion.div variants={itemVariants}>
-            <Card className="overflow-hidden bg-white shadow-sm border-0">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold text-[#000000]">Top Gainers</CardTitle>
-                  <motion.button 
-                    className="text-sm text-primary font-medium flex items-center gap-1 hover:underline"
-                    whileHover={{ x: 3 }}
-                  >
-                    View All <ChevronRight className="h-4 w-4" />
-                  </motion.button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-gray-100">
-                        <th className="text-left py-3 px-2 text-xs font-medium text-[#737692] uppercase tracking-wider">Asset</th>
-                        <th className="text-left py-3 px-2 text-xs font-medium text-[#737692] uppercase tracking-wider">Symbol</th>
-                        <th className="text-right py-3 px-2 text-xs font-medium text-[#737692] uppercase tracking-wider">Price</th>
-                        <th className="text-right py-3 px-2 text-xs font-medium text-[#737692] uppercase tracking-wider">Change</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {topGainers.map((asset, index) => (
-                        <motion.tr
-                          key={asset.symbol}
-                          className="border-b border-gray-50 last:border-0 hover:bg-gray-50/50 transition-colors"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.3 + index * 0.1 }}
-                        >
-                          <td className="py-3 px-2">
-                            <span className="text-sm font-medium text-[#000000]">{asset.name}</span>
-                          </td>
-                          <td className="py-3 px-2">
-                            <span className="text-sm text-[#737692]">{asset.symbol}</span>
-                          </td>
-                          <td className="py-3 px-2 text-right">
-                            <span className="text-sm font-medium text-[#000000]">{asset.price}</span>
-                          </td>
-                          <td className="py-3 px-2 text-right">
-                            <span className="inline-flex items-center gap-1 text-sm font-medium text-green-600">
-                              <TrendingUp className="h-3 w-3" />
-                              {asset.change}
-                            </span>
-                          </td>
-                        </motion.tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Course Suggestions */}
-          <motion.div variants={itemVariants}>
-            <Card className="overflow-hidden bg-white shadow-sm border-0">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold text-[#000000]">Course Suggestions</CardTitle>
-                  <motion.button 
-                    className="text-sm text-primary font-medium flex items-center gap-1 hover:underline"
-                    whileHover={{ x: 3 }}
-                  >
-                    See All <ChevronRight className="h-4 w-4" />
-                  </motion.button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4 sm:grid-cols-3">
-                  {courseSuggestions.map((course, index) => (
-                    <motion.div
-                      key={course.title}
-                      className="group cursor-pointer"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 + index * 0.1 }}
-                      whileHover={{ y: -5 }}
-                    >
-                      <div className="relative rounded-xl overflow-hidden aspect-video mb-3">
-                        <img
-                          src={course.image}
-                          alt={course.title}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <motion.div
-                            className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center"
-                            whileHover={{ scale: 1.1 }}
-                          >
-                            <Play className="h-5 w-5 text-primary ml-1" />
-                          </motion.div>
-                        </div>
-                        {course.progress > 0 && (
-                          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200">
-                            <motion.div
-                              className="h-full bg-primary"
-                              initial={{ width: 0 }}
-                              animate={{ width: `${course.progress}%` }}
-                              transition={{ delay: 0.8, duration: 0.5 }}
-                            />
-                          </div>
-                        )}
-                      </div>
-                      <h3 className="text-sm font-medium text-[#000000] line-clamp-2 mb-2">{course.title}</h3>
-                      <div className="flex items-center gap-3 text-xs text-[#737692]">
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {course.duration}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <BookOpen className="h-3 w-3" />
-                          {course.lessons} lessons
-                        </span>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-
-        {/* Right Column - Progress Circles & User Image */}
+      {/* Main Top Section - Two Columns */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Left Column - Stock Table & Progress Bars */}
         <div className="space-y-6">
-          {/* User Profile Image */}
-          <motion.div 
-            variants={itemVariants}
-            className="relative rounded-2xl overflow-hidden aspect-square"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
-              alt="Ibrahim Shenshen"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-            <div className="absolute bottom-4 left-4 right-4">
-              <p className="text-white font-semibold text-lg">Ibrahim Shenshen</p>
-              <p className="text-white/80 text-sm">Financial Analyst</p>
+          {/* Stock Table with Tabs */}
+          <motion.div variants={itemVariants}>
+            <Card className="overflow-hidden bg-transparent shadow-none border-0">
+              <CardContent className="p-0">
+                <Tabs defaultValue="topGainers" className="w-full">
+                  <TabsList className="bg-transparent h-auto p-0 mb-6 gap-0">
+                    <TabsTrigger 
+                      value="topGainers"
+                      className="bg-transparent px-0 mr-8 pb-2 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+                    >
+                      Top Gainers
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="topLosers"
+                      className="bg-transparent px-0 mr-8 pb-2 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+                    >
+                      Top Losers
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="mostActive"
+                      className="bg-transparent px-0 pb-2 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+                    >
+                      Most Active
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="topGainers" className="mt-0">
+                    <StockTable data={stockData.topGainers} />
+                  </TabsContent>
+                  <TabsContent value="topLosers" className="mt-0">
+                    <StockTable data={stockData.topLosers} />
+                  </TabsContent>
+                  <TabsContent value="mostActive" className="mt-0">
+                    <StockTable data={stockData.mostActive} />
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Progress Bars Section */}
+          <motion.div variants={itemVariants}>
+            <div className="flex justify-around items-center py-8">
+              <CircularProgress
+                percentage={85}
+                label="Current Learning Progress"
+                centerText="85% Completed"
+                id="learning"
+              />
+              <CircularProgress
+                percentage={80}
+                label="Upcoming Release"
+                centerText="80% Remaining"
+                id="release"
+              />
             </div>
           </motion.div>
-
-          {/* Progress Circles */}
-          <motion.div variants={itemVariants}>
-            <Card className="bg-white shadow-sm border-0">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg font-semibold text-[#000000]">Your Progress</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-around py-4">
-                  <CircularProgress
-                    percentage={75}
-                    color="#D52B1E"
-                    label="Course Progress"
-                    sublabel="3 of 4 completed"
-                  />
-                  <CircularProgress
-                    percentage={60}
-                    color="#10B981"
-                    label="Weekly Goal"
-                    sublabel="12 of 20 hours"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Quick Stats */}
-          <motion.div variants={itemVariants}>
-            <Card className="bg-white shadow-sm border-0">
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-[#FFEFEF]">
-                    <div>
-                      <p className="text-xs text-[#737692]">Portfolio Value</p>
-                      <p className="text-lg font-bold text-[#000000]">$124,500</p>
-                    </div>
-                    <div className="flex items-center gap-1 text-green-600">
-                      <TrendingUp className="h-4 w-4" />
-                      <span className="text-sm font-medium">+12.5%</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-[#FFEFEF]">
-                    <div>
-                      <p className="text-xs text-[#737692]">This Month Returns</p>
-                      <p className="text-lg font-bold text-[#000000]">$3,250</p>
-                    </div>
-                    <div className="flex items-center gap-1 text-green-600">
-                      <TrendingUp className="h-4 w-4" />
-                      <span className="text-sm font-medium">+8.2%</span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
         </div>
+
+        {/* Right Column - News Slider */}
+        <motion.div variants={itemVariants} className="overflow-hidden">
+          <motion.div 
+            className="flex gap-6"
+            animate={{ x: `calc(-${currentNewsIndex * 50}% - ${currentNewsIndex * 12}px)` }}
+            transition={isTransitioning ? { duration: 0.6, ease: "easeInOut" } : { duration: 0 }}
+          >
+            {infiniteNews.map((news, index) => (
+              <div key={`${news.id}-${index}`} className="w-[calc(50%-12px)] flex-shrink-0">
+                <NewsCard news={news} />
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Bottom Section - Course Suggestions & Stats */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Course Suggestions */}
+        <motion.div variants={itemVariants} className="lg:col-span-2">
+          <Card className="overflow-hidden bg-white shadow-sm border-0">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-semibold text-[#000000]">Course Suggestions</CardTitle>
+                <motion.button 
+                  className="text-sm text-[#D52B1E] font-medium flex items-center gap-1 hover:underline"
+                  whileHover={{ x: 3 }}
+                >
+                  See All <ChevronRight className="h-4 w-4" />
+                </motion.button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                {/* Help me choose section */}
+                <div className="bg-gradient-to-r from-[#D52B1E]/10 to-[#6F1610]/10 rounded-xl p-6 border border-[#D52B1E]/20">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-[#000000] mb-2">Help me choose</h3>
+                      <p className="text-sm text-[#737692] mb-3 leading-relaxed">
+                        Answer a few questions about your experience, goals, and interests to find your next step
+                      </p>
+                      <div className="flex items-center gap-2 text-xs text-[#737692] mb-4">
+                        <Clock className="h-3 w-3" />
+                        <span>Takes 2 minutes</span>
+                      </div>
+                      <motion.button 
+                        className="px-4 py-2 bg-[#D52B1E] text-white text-sm font-medium rounded-lg hover:bg-[#B8241B] transition-colors"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Start now
+                      </motion.button>
+                    </div>
+                    <div className="ml-4 text-[#D52B1E]/30">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Best selling courses */}
+                <div>
+                  <h3 className="text-base font-semibold text-[#000000] mb-4">Best Selling Courses</h3>
+                  <div className="grid gap-4 sm:grid-cols-3">
+                    {courseSuggestions.map((course, index) => (
+                      <motion.div
+                        key={course.title}
+                        className="group cursor-pointer"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 + index * 0.1 }}
+                        whileHover={{ y: -5 }}
+                      >
+                        <div className="relative rounded-xl overflow-hidden aspect-video mb-3">
+                          <img
+                            src={course.image}
+                            alt={course.title}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <motion.div
+                              className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center"
+                              whileHover={{ scale: 1.1 }}
+                            >
+                              <Play className="h-5 w-5 text-[#D52B1E] ml-1" />
+                            </motion.div>
+                          </div>
+                          {course.progress > 0 && (
+                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200">
+                              <motion.div
+                                className="h-full bg-[#D52B1E]"
+                                initial={{ width: 0 }}
+                                animate={{ width: `${course.progress}%` }}
+                                transition={{ delay: 0.8, duration: 0.5 }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                        <h3 className="text-sm font-medium text-[#000000] line-clamp-2 mb-2">{course.title}</h3>
+                        <div className="flex items-center gap-3 text-xs text-[#737692]">
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            {course.duration}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <BookOpen className="h-3 w-3" />
+                            {course.lessons} lessons
+                          </span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Quick Stats */}
+        <motion.div variants={itemVariants}>
+          <Card className="bg-white shadow-sm border-0">
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-[#FFEFEF]">
+                  <div>
+                    <p className="text-xs text-[#737692]">Portfolio Value</p>
+                    <p className="text-lg font-bold text-[#000000]">$124,500</p>
+                  </div>
+                  <div className="flex items-center gap-1 text-green-600">
+                    <TrendingUp className="h-4 w-4" />
+                    <span className="text-sm font-medium">+12.5%</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-[#FFEFEF]">
+                  <div>
+                    <p className="text-xs text-[#737692]">This Month Returns</p>
+                    <p className="text-lg font-bold text-[#000000]">$3,250</p>
+                  </div>
+                  <div className="flex items-center gap-1 text-green-600">
+                    <TrendingUp className="h-4 w-4" />
+                    <span className="text-sm font-medium">+8.2%</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </motion.div>
   )

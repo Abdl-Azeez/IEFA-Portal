@@ -11,14 +11,14 @@ export function MainLayout() {
   return (
     <div className="overflow-x-hidden" style={{ backgroundColor: '#FFEFEF' }}>
       {/* Main content area with sidebar */}
-      <div className="relative min-h-screen">
+      <div className="relative" style={{ minHeight: '900px' }}>
         <Sidebar 
           isCollapsed={isSidebarCollapsed} 
           onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
         />
         <div 
-          className="flex flex-col min-h-screen transition-all duration-300"
-          style={{ marginLeft: isSidebarCollapsed ? '80px' : '297px' }}
+          className="flex flex-col transition-all duration-300"
+          style={{ marginLeft: isSidebarCollapsed ? '80px' : '297px', minHeight: '900px' }}
         >
           <Header />
           <main className="flex-1 p-6">

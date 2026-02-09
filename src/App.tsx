@@ -4,6 +4,8 @@ import { Dashboard } from '@/pages/Dashboard'
 import { News } from '@/pages/News'
 import { MarketInsights } from '@/pages/MarketInsights'
 import { LearningZone } from '@/pages/LearningZone'
+import Community from '@/pages/Community'
+import Directory from '@/pages/Directory'
 import { NotAvailable } from '@/pages/NotAvailable'
 
 function App() {
@@ -17,8 +19,8 @@ function App() {
           <Route path="news" element={<News />} />
           <Route path="market-insights" element={<MarketInsights />} />
           <Route path="learning-zone" element={<LearningZone />} />
-          <Route path="community" element={<NotAvailable />} />
-          <Route path="directory" element={<NotAvailable />} />
+          <Route path="community" element={<Community />} />
+          <Route path="directory" element={<Directory />} />
           <Route path="research-reports" element={<NotAvailable />} />
           <Route path="data" element={<NotAvailable />} />
           <Route path="podcast" element={<NotAvailable />} />

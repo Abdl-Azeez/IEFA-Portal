@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
-import { TrendingUp, TrendingDown, BarChart3, PieChart, ArrowUpRight, ArrowDownRight, Globe, Building2, Briefcase } from 'lucide-react'
+import { TrendingUp, TrendingDown, BarChart3, PieChart, ArrowUpRight, ArrowDownRight, Globe, Building2, Briefcase, ChevronUp } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -113,6 +114,75 @@ function IndexCard({ name, value, change, trend, percentage, delay = 0 }: IndexC
 }
 
 export function MarketInsights() {
+  const stockData = {
+    topGainers: [
+      { symbol: 'DANGOTE', company: 'Dangote Cement Ltd', price: '1,7888.29', change: '+5.2%', trend: 'up' as const },
+      { symbol: 'BUA', company: 'Bua Cement Ltd', price: '1,7888.29', change: '+4.8%', trend: 'up' as const },
+      { symbol: 'MTNN', company: 'MTN Nigeria comm', price: '1,7888.29', change: '+3.9%', trend: 'up' as const },
+      { symbol: 'GTCO', company: 'Guaranty Trust Holding', price: '45.50', change: '+3.5%', trend: 'up' as const },
+    ],
+    topLosers: [
+      { symbol: 'NESTLE', company: 'Nestle Nigeria Plc', price: '1,2500.00', change: '-2.1%', trend: 'down' as const },
+      { symbol: 'GUINNESS', company: 'Guinness Nigeria Plc', price: '890.50', change: '-1.8%', trend: 'down' as const },
+      { symbol: 'UNILEVER', company: 'Unilever Nigeria Plc', price: '450.00', change: '-1.5%', trend: 'down' as const },
+      { symbol: 'SEPLAT', company: 'Seplat Energy Plc', price: '320.30', change: '-1.2%', trend: 'down' as const },
+    ],
+    mostActive: [
+      { symbol: 'ZENITH', company: 'Zenith Bank Plc', price: '38.90', change: '+2.8%', trend: 'up' as const },
+      { symbol: 'ACCESS', company: 'Access Holdings Plc', price: '22.30', change: '+2.3%', trend: 'up' as const },
+      { symbol: 'FBNH', company: 'FBN Holdings Plc', price: '15.75', change: '+1.9%', trend: 'up' as const },
+      { symbol: 'STANBIC', company: 'Stanbic IBTC Plc', price: '42.50', change: '+1.6%', trend: 'up' as const },
+    ],
+  }
+  
+  const PerformanceCard = ({ stock, index }: { stock: any; index: number }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      whileHover={{ y: -4, boxShadow: '0 12px 24px rgba(0,0,0,0.1)' }}
+      className={`p-4 rounded-lg border transition-all cursor-pointer ${
+        stock.trend === 'up' 
+          ? 'bg-gradient-to-br from-green-50 to-green-100/50 border-green-200' 
+          : 'bg-gradient-to-br from-red-50 to-red-100/50 border-red-200'
+      }`}
+    >
+      <div className="flex items-start justify-between mb-3">
+        <div>
+          <h4 className="font-bold text-[#000000] text-base">{stock.symbol}</h4>
+          <p className="text-xs text-[#737692]">{stock.company}</p>
+        </div>
+        <motion.div
+          className={`h-8 w-8 rounded-full flex items-center justify-center ${
+            stock.trend === 'up' ? 'bg-green-600/20' : 'bg-red-600/20'
+          }`}
+          whileHover={{ rotate: 360, scale: 1.1 }}
+          transition={{ duration: 0.6 }}
+        >
+          <ChevronUp className={`h-4 w-4 ${stock.trend === 'up' ? 'text-green-600' : 'text-red-600 rotate-180'}`} />
+        </motion.div>
+      </div>
+      
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-[#737692]">Price</span>
+          <span className="font-semibold text-[#000000]">{stock.price}</span>
+        </div>
+        <div className="flex items-center justify-between pt-2 border-t border-current border-opacity-10">
+          <span className="text-xs text-[#737692]">Change</span>
+          <span className={`text-lg font-bold ${stock.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+            {stock.change}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  )
+
+  const performanceData = [
+    { title: 'Top Gainers', data: stockData.topGainers },
+    { title: 'Top Losers', data: stockData.topLosers },
+    { title: 'Most Active', data: stockData.mostActive },
+  ]
   const marketOverview = [
     {
       title: 'Total Market Cap',
@@ -190,6 +260,45 @@ export function MarketInsights() {
           <MarketCard key={market.title} {...market} delay={index * 0.1} />
         ))}
       </div>
+
+      {/* Stock Performance Section */}
+      <motion.div variants={itemVariants}>
+        <Card className="transition-all duration-300 hover:shadow-xl border-0 shadow-sm">
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl text-[#000000]">Stock Performance</CardTitle>
+                <CardDescription className="text-[#737692]">Real-time market performance by category</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="Top Gainers" className="w-full">
+              <TabsList className="bg-transparent h-auto p-0 mb-6 gap-0">
+                {['Top Gainers', 'Top Losers', 'Most Active'].map((tab, idx) => (
+                  <TabsTrigger 
+                    key={tab}
+                    value={tab}
+                    className="bg-transparent px-0 mr-8 pb-2 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+                  >
+                    {tab}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              
+              {performanceData.map((perf) => (
+                <TabsContent key={perf.title} value={perf.title} className="mt-0">
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    {perf.data.map((stock, index) => (
+                      <PerformanceCard key={stock.symbol} stock={stock} index={index} />
+                    ))}
+                  </div>
+                </TabsContent>
+              ))}
+            </Tabs>
+          </CardContent>
+        </Card>
+      </motion.div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Major Indices */}
