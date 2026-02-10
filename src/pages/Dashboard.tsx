@@ -48,7 +48,7 @@ function CircularProgress({ percentage, label, centerText, id }: CircularProgres
       animate={{ scale: 1 }}
       transition={{ duration: 0.5, type: "spring" }}
     >
-      <div className="relative w-44 h-44">
+      <div className="relative w-32 h-32 sm:w-44 sm:h-44">
         <svg className="w-full h-full transform -rotate-90" viewBox="0 0 180 180">
           <defs>
             <linearGradient id={`progressGradient-${id}`} x1="0%" y1="0%" x2="0%" y2="100%">
@@ -164,23 +164,23 @@ function StockTable({ data }: StockTableProps) {
       {data.map((stock, index) => (
         <motion.div
           key={stock.symbol}
-          className={`py-4 ${index !== data.length - 1 ? 'border-b border-gray-200' : ''}`}
+          className={`py-3 sm:py-4 ${index !== data.length - 1 ? 'border-b border-gray-200' : ''}`}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 + index * 0.1 }}
         >
-          <div className="grid grid-cols-3 gap-4 items-center">
-            <div>
-              <p className="text-sm font-bold text-[#000000]">{stock.symbol}</p>
-              <p className="text-xs text-[#D52B1E]">{stock.company}</p>
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 items-center">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm font-bold text-[#000000] truncate">{stock.symbol}</p>
+              <p className="text-xs text-[#D52B1E] truncate">{stock.company}</p>
             </div>
             <div className="flex items-center gap-1 justify-center">
-              <span className="text-sm font-medium text-[#000000]">{stock.price1}</span>
-              <ChevronUp className={`h-4 w-4 ${stock.trend === 'up' ? 'text-green-600' : 'text-red-600 rotate-180'}`} />
+              <span className="text-xs sm:text-sm font-medium text-[#000000]">{stock.price1}</span>
+              <ChevronUp className={`h-3 w-3 sm:h-4 sm:w-4 ${stock.trend === 'up' ? 'text-green-600' : 'text-red-600 rotate-180'}`} />
             </div>
             <div className="flex items-center gap-1 justify-center">
-              <span className="text-sm font-medium text-[#000000]">{stock.price2}</span>
-              <ChevronUp className={`h-4 w-4 ${stock.trend === 'up' ? 'text-green-600' : 'text-red-600 rotate-180'}`} />
+              <span className="text-xs sm:text-sm font-medium text-[#000000]">{stock.price2}</span>
+              <ChevronUp className={`h-3 w-3 sm:h-4 sm:w-4 ${stock.trend === 'up' ? 'text-green-600' : 'text-red-600 rotate-180'}`} />
             </div>
           </div>
         </motion.div>
@@ -221,6 +221,15 @@ export function Dashboard() {
   const navigate = useNavigate()
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Duplicate news for infinite loop
   const infiniteNews = [...newsData, ...newsData]
@@ -255,19 +264,19 @@ export function Dashboard() {
       variants={containerVariants}
     >
       {/* Welcome Section */}
-      <motion.div variants={itemVariants} className="flex justify-between items-start">
+      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-between items-start gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#000000]">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#000000]">
             Hello, <span className="text-primary">Ibrahim Shenshen!</span>
           </h1>
-          <p className="mt-1 text-[#737692]">
+          <p className="mt-1 text-sm sm:text-base text-[#737692]">
             Track your learning progress and see assets and trends
           </p>
         </div>
       </motion.div>
 
       {/* Main Top Section - Two Columns */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 xl:grid-cols-2">
         {/* Left Column - Stock Table & Progress Bars */}
         <div className="space-y-6">
           {/* Stock Table with Tabs */}
@@ -275,22 +284,22 @@ export function Dashboard() {
             <Card className="overflow-hidden bg-transparent shadow-none border-0">
               <CardContent className="p-0">
                 <Tabs defaultValue="topGainers" className="w-full">
-                  <TabsList className="bg-transparent h-auto p-0 mb-6 gap-0">
+                  <TabsList className="bg-transparent h-auto p-0 mb-6 gap-0 flex-wrap">
                     <TabsTrigger 
                       value="topGainers"
-                      className="bg-transparent px-0 mr-8 pb-2 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+                      className="bg-transparent px-0 mr-4 sm:mr-8 pb-2 text-xs sm:text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
                     >
                       Top Gainers
                     </TabsTrigger>
                     <TabsTrigger 
                       value="topLosers"
-                      className="bg-transparent px-0 mr-8 pb-2 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+                      className="bg-transparent px-0 mr-4 sm:mr-8 pb-2 text-xs sm:text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
                     >
                       Top Losers
                     </TabsTrigger>
                     <TabsTrigger 
                       value="mostActive"
-                      className="bg-transparent px-0 pb-2 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+                      className="bg-transparent px-0 pb-2 text-xs sm:text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
                     >
                       Most Active
                     </TabsTrigger>
@@ -311,7 +320,7 @@ export function Dashboard() {
 
           {/* Progress Bars Section */}
           <motion.div variants={itemVariants}>
-            <div className="flex justify-around items-center py-8">
+            <div className="flex flex-col sm:flex-row justify-around items-center py-4 sm:py-8 gap-8 sm:gap-4">
               <CircularProgress
                 percentage={85}
                 label="Current Learning Progress"
@@ -331,12 +340,16 @@ export function Dashboard() {
         {/* Right Column - News Slider */}
         <motion.div variants={itemVariants} className="overflow-hidden">
           <motion.div 
-            className="flex gap-6"
-            animate={{ x: `calc(-${currentNewsIndex * 50}% - ${currentNewsIndex * 12}px)` }}
+            className="flex gap-4 sm:gap-6"
+            animate={{ 
+              x: isMobile 
+                ? `calc(-${currentNewsIndex * 100}% - ${currentNewsIndex * 16}px)` 
+                : `calc(-${currentNewsIndex * 50}% - ${currentNewsIndex * 24}px)` 
+            }}
             transition={isTransitioning ? { duration: 0.6, ease: "easeInOut" } : { duration: 0 }}
           >
             {infiniteNews.map((news, index) => (
-              <div key={`${news.id}-${index}`} className="w-[calc(50%-12px)] flex-shrink-0">
+              <div key={`${news.id}-${index}`} className="w-full sm:w-[calc(50%-12px)] flex-shrink-0">
                 <NewsCard news={news} />
               </div>
             ))}
@@ -345,9 +358,9 @@ export function Dashboard() {
       </div>
 
       {/* Bottom Section - Course Suggestions & Stats */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 xl:grid-cols-3">
         {/* Course Suggestions */}
-        <motion.div variants={itemVariants} className="lg:col-span-2">
+        <motion.div variants={itemVariants} className="xl:col-span-2">
           <Card className="overflow-hidden bg-white shadow-sm border-0">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -394,7 +407,7 @@ export function Dashboard() {
                 {/* Best selling courses */}
                 <div>
                   <h3 className="text-base font-semibold text-[#000000] mb-4">Best Selling Courses</h3>
-                  <div className="grid gap-4 sm:grid-cols-3">
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {courseSuggestions.map((course, index) => (
                       <motion.div
                         key={course.title}
