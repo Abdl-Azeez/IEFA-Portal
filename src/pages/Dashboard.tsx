@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { TrendingUp, ChevronUp, Play, Clock, BookOpen, ChevronRight } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -217,6 +218,7 @@ function NewsCard({ news }: NewsCardProps) {
 }
 
 export function Dashboard() {
+  const navigate = useNavigate()
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(true)
 
@@ -376,6 +378,7 @@ export function Dashboard() {
                         className="px-4 py-2 bg-[#D52B1E] text-white text-sm font-medium rounded-lg hover:bg-[#B8241B] transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
+                        onClick={() => navigate('/questionnaire')}
                       >
                         Start now
                       </motion.button>

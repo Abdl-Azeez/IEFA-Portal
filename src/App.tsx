@@ -7,6 +7,8 @@ import { LearningZone } from '@/pages/LearningZone'
 import Community from '@/pages/Community'
 import Directory from '@/pages/Directory'
 import { NotAvailable } from '@/pages/NotAvailable'
+import Questionnaire from '@/pages/Questionnaire'
+import CourseResults from '@/pages/CourseResults'
 
 function App() {
   console.log('App component loaded - routing should work now!')
@@ -21,6 +23,8 @@ function App() {
           <Route path="learning-zone" element={<LearningZone />} />
           <Route path="community" element={<Community />} />
           <Route path="directory" element={<Directory />} />
+          <Route path="questionnaire" element={<Questionnaire />} />
+          <Route path="course-results" element={<CourseResults />} />
           <Route path="research-reports" element={<NotAvailable />} />
           <Route path="data" element={<NotAvailable />} />
           <Route path="podcast" element={<NotAvailable />} />
