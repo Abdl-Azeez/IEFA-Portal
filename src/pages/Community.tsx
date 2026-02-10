@@ -131,28 +131,28 @@ export default function Community() {
 
       {/* Main Tabs */}
       <Tabs defaultValue="discussions" className="w-full" onValueChange={setSelectedTab}>
-        <TabsList className="bg-transparent h-auto p-0 mb-6 gap-2 border-b-0 w-full justify-start">
+        <TabsList className="bg-transparent h-auto p-0 mb-6 gap-2 border-b-0 w-full justify-start overflow-x-auto scrollbar-hide -mx-2 px-2 flex-nowrap md:flex-wrap md:overflow-visible md:px-0">
           <TabsTrigger 
             value="discussions"
-            className="bg-white px-6 py-2 text-sm font-medium data-[state=active]:bg-[#D52B1E] data-[state=active]:text-white data-[state=active]:shadow-sm rounded-full text-[#000000] border border-gray-200 data-[state=active]:border-[#D52B1E]"
+            className="bg-white px-6 py-2 text-sm font-medium data-[state=active]:bg-[#D52B1E] data-[state=active]:text-white data-[state=active]:shadow-sm rounded-full text-[#000000] border border-gray-200 data-[state=active]:border-[#D52B1E] shrink-0"
           >
             Discussions
           </TabsTrigger>
           <TabsTrigger 
             value="study-groups"
-            className="bg-white px-6 py-2 text-sm font-medium data-[state=active]:bg-[#D52B1E] data-[state=active]:text-white data-[state=active]:shadow-sm rounded-full text-[#000000] border border-gray-200 data-[state=active]:border-[#D52B1E]"
+            className="bg-white px-6 py-2 text-sm font-medium data-[state=active]:bg-[#D52B1E] data-[state=active]:text-white data-[state=active]:shadow-sm rounded-full text-[#000000] border border-gray-200 data-[state=active]:border-[#D52B1E] shrink-0"
           >
             Study Groups
           </TabsTrigger>
           <TabsTrigger 
             value="mentorship"
-            className="bg-white px-6 py-2 text-sm font-medium data-[state=active]:bg-[#D52B1E] data-[state=active]:text-white data-[state=active]:shadow-sm rounded-full text-[#000000] border border-gray-200 data-[state=active]:border-[#D52B1E]"
+            className="bg-white px-6 py-2 text-sm font-medium data-[state=active]:bg-[#D52B1E] data-[state=active]:text-white data-[state=active]:shadow-sm rounded-full text-[#000000] border border-gray-200 data-[state=active]:border-[#D52B1E] shrink-0"
           >
             Mentorship
           </TabsTrigger>
           <TabsTrigger 
             value="events"
-            className="bg-white px-6 py-2 text-sm font-medium data-[state=active]:bg-[#D52B1E] data-[state=active]:text-white data-[state=active]:shadow-sm rounded-full text-[#000000] border border-gray-200 data-[state=active]:border-[#D52B1E]"
+            className="bg-white px-6 py-2 text-sm font-medium data-[state=active]:bg-[#D52B1E] data-[state=active]:text-white data-[state=active]:shadow-sm rounded-full text-[#000000] border border-gray-200 data-[state=active]:border-[#D52B1E] shrink-0"
           >
             Events
           </TabsTrigger>
@@ -170,21 +170,21 @@ export default function Community() {
               >
                 <Card className="hover:shadow-lg transition-all cursor-pointer border-l-0">
                   <CardContent className="p-6">
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
                           <h3 className="text-lg font-semibold text-[#000000]">{discussion.title}</h3>
                           <Badge className={`${discussion.moduleColor} text-white hover:${discussion.moduleColor}`}>
                             {discussion.module}
                           </Badge>
                         </div>
                         <p className="text-sm text-[#737692] mb-3">{discussion.description}</p>
-                        <div className="flex items-center gap-4 text-sm text-[#737692]">
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[#737692]">
                           <span>Posted by {discussion.poster}</span>
                           <span>• {discussion.time}</span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 text-[#737692]">
+                      <div className="flex items-center gap-2 text-[#737692] sm:mt-1">
                         <MessageSquare className="h-4 w-4" />
                         <span className="text-sm font-medium">{discussion.replies} replies</span>
                       </div>

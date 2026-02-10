@@ -36,40 +36,40 @@ export function LearningZone() {
 
       {/* Main Tabs */}
       <Tabs defaultValue="my-learning" className="w-full">
-        <TabsList className="bg-transparent h-auto p-0 mb-6 gap-0 border-b w-full justify-start">
+        <TabsList className="bg-transparent h-auto p-0 mb-6 gap-2 border-b w-full justify-start overflow-x-auto scrollbar-hide -mx-2 px-2 flex-nowrap md:gap-0 md:overflow-visible md:px-0 md:flex-wrap">
           <TabsTrigger 
             value="my-learning"
-            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent shrink-0"
           >
             My Learning
           </TabsTrigger>
           <TabsTrigger 
             value="programs"
-            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent shrink-0"
           >
             Programs and Certifications
           </TabsTrigger>
           <TabsTrigger 
             value="paths"
-            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent shrink-0"
           >
             Learning Paths
           </TabsTrigger>
           <TabsTrigger 
             value="assessments"
-            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent shrink-0"
           >
             Assessments
           </TabsTrigger>
           <TabsTrigger 
             value="payments"
-            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent shrink-0"
           >
             Payments
           </TabsTrigger>
           <TabsTrigger 
             value="results"
-            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent"
+            className="bg-transparent px-4 pb-3 text-sm font-medium data-[state=active]:bg-transparent data-[state=active]:text-[#D52B1E] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#D52B1E] rounded-none text-[#737692] hover:bg-transparent shrink-0"
           >
             Results
           </TabsTrigger>
@@ -274,7 +274,7 @@ export function LearningZone() {
               <div className="grid gap-6 md:grid-cols-2">
                 <Card className="border-l-4 border-l-[#D52B1E] hover:shadow-xl transition-all">
                   <CardHeader>
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex flex-col gap-3 mb-2 sm:flex-row sm:items-center">
                       <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-[#D52B1E] to-[#6F1610] flex items-center justify-center">
                         <GraduationCap className="h-7 w-7 text-white" />
                       </div>
@@ -289,7 +289,7 @@ export function LearningZone() {
                     <p className="text-sm text-[#737692]">
                       A comprehensive certification program covering Islamic banking, finance principles, investment strategies, and professional practice.
                     </p>
-                    <div className="grid grid-cols-3 gap-3 text-sm">
+                    <div className="grid gap-3 text-sm sm:grid-cols-3">
                       <div className="text-center p-3 bg-gray-50 rounded-lg">
                         <p className="font-semibold text-[#000000]">8 Modules</p>
                         <p className="text-xs text-[#737692]">Comprehensive</p>
@@ -318,7 +318,7 @@ export function LearningZone() {
 
                 <Card className="hover:shadow-xl transition-all">
                   <CardHeader>
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex flex-col gap-3 mb-2 sm:flex-row sm:items-center">
                       <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
                         <BarChart3 className="h-7 w-7 text-white" />
                       </div>
@@ -332,7 +332,7 @@ export function LearningZone() {
                     <p className="text-sm text-[#737692]">
                       Master sustainable and ethical finance principles aligned with Islamic values and modern ESG frameworks.
                     </p>
-                    <div className="grid grid-cols-3 gap-3 text-sm">
+                    <div className="grid gap-3 text-sm sm:grid-cols-3">
                       <div className="text-center p-3 bg-gray-50 rounded-lg">
                         <p className="font-semibold text-[#000000]">6 Modules</p>
                         <p className="text-xs text-[#737692]">Focused Track</p>
@@ -354,7 +354,7 @@ export function LearningZone() {
 
                 <Card className="hover:shadow-xl transition-all">
                   <CardHeader>
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex flex-col gap-3 mb-2 sm:flex-row sm:items-center">
                       <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-purple-600 to-purple-800 flex items-center justify-center">
                         <Award className="h-7 w-7 text-white" />
                       </div>
@@ -368,7 +368,7 @@ export function LearningZone() {
                     <p className="text-sm text-[#737692]">
                       Develop hands-on expertise in Islamic banking operations, compliance, and customer service excellence.
                     </p>
-                    <div className="grid grid-cols-3 gap-3 text-sm">
+                    <div className="grid gap-3 text-sm sm:grid-cols-3">
                       <div className="text-center p-3 bg-gray-50 rounded-lg">
                         <p className="font-semibold text-[#000000]">5 Modules</p>
                         <p className="text-xs text-[#737692]">Practical</p>
@@ -781,7 +781,7 @@ export function LearningZone() {
                 <div className="grid gap-4">
                   <Card className="hover:shadow-lg transition-all border-l-4 border-l-orange-500">
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between">
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                         <div className="space-y-2 flex-1">
                           <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-lg bg-orange-100 flex items-center justify-center">
@@ -792,7 +792,7 @@ export function LearningZone() {
                               <p className="text-sm text-[#737692]">Investment Planning & Portfolio Management</p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-4 text-sm text-[#737692] ml-13">
+                          <div className="flex flex-wrap items-center gap-4 text-sm text-[#737692] sm:ml-12">
                             <span className="flex items-center gap-1">
                               <Clock className="h-4 w-4" />
                               2 hours
@@ -803,7 +803,7 @@ export function LearningZone() {
                             </span>
                           </div>
                         </div>
-                        <Button className="bg-[#D52B1E] hover:bg-[#B8241B] text-white">
+                        <Button className="w-full bg-[#D52B1E] hover:bg-[#B8241B] text-white sm:w-auto">
                           Start Exam
                         </Button>
                       </div>
@@ -812,7 +812,7 @@ export function LearningZone() {
 
                   <Card className="hover:shadow-lg transition-all border-l-4 border-l-yellow-500">
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between">
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                         <div className="space-y-2 flex-1">
                           <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-lg bg-yellow-100 flex items-center justify-center">
@@ -823,7 +823,7 @@ export function LearningZone() {
                               <p className="text-sm text-[#737692]">Module Assessment</p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-4 text-sm text-[#737692] ml-13">
+                          <div className="flex flex-wrap items-center gap-4 text-sm text-[#737692] sm:ml-12">
                             <span className="flex items-center gap-1">
                               <Clock className="h-4 w-4" />
                               45 minutes
@@ -834,7 +834,7 @@ export function LearningZone() {
                             </span>
                           </div>
                         </div>
-                        <Button variant="outline" className="border-[#D52B1E] text-[#D52B1E] hover:bg-[#D52B1E] hover:text-white">
+                        <Button variant="outline" className="w-full border-[#D52B1E] text-[#D52B1E] hover:bg-[#D52B1E] hover:text-white sm:w-auto">
                           Start Quiz
                         </Button>
                       </div>
@@ -1215,7 +1215,7 @@ export function LearningZone() {
                 <CardTitle className="text-[#000000]">Performance Overview</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid gap-4 sm:grid-cols-3">
                   <div className="text-center p-4 bg-green-50 rounded-lg">
                     <p className="text-3xl font-bold text-green-600">89%</p>
                     <p className="text-sm text-[#737692] mt-1">Average Score</p>

@@ -193,11 +193,11 @@ export function News() {
       {/* Tabs */}
       <motion.div variants={itemVariants}>
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-4">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="trending">Trending</TabsTrigger>
-            <TabsTrigger value="market">Market</TabsTrigger>
-            <TabsTrigger value="regulation">Regulation</TabsTrigger>
+          <TabsList className="flex w-full max-w-full gap-2 overflow-x-auto scrollbar-hide px-2 pr-4 snap-x snap-mandatory scroll-px-4 justify-start md:px-0 md:pr-0 md:grid md:max-w-md md:grid-cols-4 md:gap-0 md:overflow-visible md:snap-none">
+            <TabsTrigger value="all" className="shrink-0 snap-start">All</TabsTrigger>
+            <TabsTrigger value="trending" className="shrink-0 snap-start">Trending</TabsTrigger>
+            <TabsTrigger value="market" className="shrink-0 snap-start">Market</TabsTrigger>
+            <TabsTrigger value="regulation" className="shrink-0 snap-start">Regulation</TabsTrigger>
           </TabsList>
           
           <TabsContent value="all" className="mt-6">
